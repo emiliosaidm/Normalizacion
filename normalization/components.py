@@ -65,7 +65,7 @@ class Dependency(ABC):
     def is_trivial(self, *args, **kwargs) -> bool:
         """
         Determines if the dependency is trivial or not.
-    
+
         Returns:
             bool: True if the dependency is trivial, False otherwise.
         """
@@ -78,8 +78,7 @@ class FunctionalDependency(Dependency):
     _SEPARATOR = "->"
 
     def is_trivial(self) -> bool:
-        # TODO: Actividad 1
-        raise NotImplementedError()
+        return self.dependant.issubset(self.determinant)
 
 
 class MultivaluedDependency(Dependency):
@@ -88,8 +87,7 @@ class MultivaluedDependency(Dependency):
     _SEPARATOR = "->->"
 
     def is_trivial(self, heading: set[Attribute]) -> bool:
-        # TODO: Actividad 2
-        raise NotImplementedError()
+        return self.dependant.issubset(self.determinant) or self.dependant.union(self.determinant) == heading
 
 
 class Relvar:
@@ -121,10 +119,10 @@ class Relvar:
     def add_functional_dependency(self, functional_dependency: FunctionalDependency):
         """
         Adds a functional dependency to the relvar's set of functional dependencies.
-    
+
         Args:
             functional_dependency (FunctionalDependency): The functional dependency to add.
-    
+
         Raises:
             InvalidDependency: If the functional dependency contains an attribute that is
                 not present in the relvar's heading.
